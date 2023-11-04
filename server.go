@@ -39,20 +39,20 @@ func NewServerWithSlaveId(slaveId uint8) *Server {
 	}
 
 	// Allocate Modbus memory maps.
-	s.DiscreteInputs = make([]byte, 65536)
-	s.Coils = make([]byte, 65536)
-	s.HoldingRegisters = make([]uint16, 65536)
-	s.InputRegisters = make([]uint16, 65536)
+	s.DiscreteInputs = make([]byte, MaxRegisterSize)
+	s.Coils = make([]byte, MaxRegisterSize)
+	s.HoldingRegisters = make([]uint16, MaxRegisterSize)
+	s.InputRegisters = make([]uint16, MaxRegisterSize)
 
 	// Add default functions.
-	s.function[1] = ReadCoils
-	s.function[2] = ReadDiscreteInputs
-	s.function[3] = ReadHoldingRegisters
-	s.function[4] = ReadInputRegisters
-	s.function[5] = WriteSingleCoil
-	s.function[6] = WriteHoldingRegister
-	s.function[15] = WriteMultipleCoils
-	s.function[16] = WriteHoldingRegisters
+	s.function[ReadCoilsFC] = ReadCoils
+	s.function[ReadDiscreteInputsFC] = ReadDiscreteInputs
+	s.function[ReadHoldingRegistersFC] = ReadHoldingRegisters
+	s.function[ReadInputRegistersFC] = ReadInputRegisters
+	s.function[WriteSingleCoilFC] = WriteSingleCoil
+	s.function[WriteHoldingRegisterFC] = WriteHoldingRegister
+	s.function[WriteMultipleCoilsFC] = WriteMultipleCoils
+	s.function[WriteHoldingRegistersFC] = WriteHoldingRegisters
 
 	s.requestChan = make(chan *Request)
 	s.portsCloseChan = make(chan struct{})

@@ -4,10 +4,23 @@ import (
 	"encoding/binary"
 )
 
+const (
+	MaxRegisterSize = 65536
+
+	ReadCoilsFC             = 1
+	ReadDiscreteInputsFC    = 2
+	ReadHoldingRegistersFC  = 3
+	ReadInputRegistersFC    = 4
+	WriteSingleCoilFC       = 5
+	WriteHoldingRegisterFC  = 6
+	WriteMultipleCoilsFC    = 15
+	WriteHoldingRegistersFC = 16
+)
+
 // ReadCoils function 1, reads coils from internal memory.
 func ReadCoils(s *Server, frame Framer) ([]byte, *Exception) {
 	register, numRegs, endRegister := registerAddressAndNumber(frame)
-	if endRegister > 65535 {
+	if endRegister > MaxRegisterSize {
 		return []byte{}, &IllegalDataAddress
 	}
 	dataSize := numRegs / 8
@@ -28,7 +41,7 @@ func ReadCoils(s *Server, frame Framer) ([]byte, *Exception) {
 // ReadDiscreteInputs function 2, reads discrete inputs from internal memory.
 func ReadDiscreteInputs(s *Server, frame Framer) ([]byte, *Exception) {
 	register, numRegs, endRegister := registerAddressAndNumber(frame)
-	if endRegister > 65535 {
+	if endRegister > MaxRegisterSize {
 		return []byte{}, &IllegalDataAddress
 	}
 	dataSize := numRegs / 8
@@ -49,7 +62,7 @@ func ReadDiscreteInputs(s *Server, frame Framer) ([]byte, *Exception) {
 // ReadHoldingRegisters function 3, reads holding registers from internal memory.
 func ReadHoldingRegisters(s *Server, frame Framer) ([]byte, *Exception) {
 	register, numRegs, endRegister := registerAddressAndNumber(frame)
-	if endRegister > 65536 {
+	if endRegister > MaxRegisterSize {
 		return []byte{}, &IllegalDataAddress
 	}
 	return append([]byte{byte(numRegs * 2)}, Uint16ToBytes(s.HoldingRegisters[register:endRegister])...), &Success
@@ -58,7 +71,7 @@ func ReadHoldingRegisters(s *Server, frame Framer) ([]byte, *Exception) {
 // ReadInputRegisters function 4, reads input registers from internal memory.
 func ReadInputRegisters(s *Server, frame Framer) ([]byte, *Exception) {
 	register, numRegs, endRegister := registerAddressAndNumber(frame)
-	if endRegister > 65536 {
+	if endRegister > MaxRegisterSize {
 		return []byte{}, &IllegalDataAddress
 	}
 	return append([]byte{byte(numRegs * 2)}, Uint16ToBytes(s.InputRegisters[register:endRegister])...), &Success
@@ -87,7 +100,7 @@ func WriteMultipleCoils(s *Server, frame Framer) ([]byte, *Exception) {
 	register, numRegs, endRegister := registerAddressAndNumber(frame)
 	valueBytes := frame.GetData()[5:]
 
-	if endRegister > 65536 {
+	if endRegister > MaxRegisterSize {
 		return []byte{}, &IllegalDataAddress
 	}
 

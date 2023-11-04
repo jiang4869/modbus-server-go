@@ -152,6 +152,7 @@ func Example() {
 
 	// Connect a client.
 	handler := modbus.NewTCPClientHandler("localhost:1502")
+	handler.SlaveId = 1
 	err = handler.Connect()
 	if err != nil {
 		log.Printf("%v\n", err)
@@ -216,6 +217,7 @@ func ExampleServer_RegisterFunctionHandler() {
 
 	// Connect a client.
 	handler := modbus.NewTCPClientHandler("localhost:4321")
+	handler.SlaveId = 1
 	err = handler.Connect()
 	if err != nil {
 		log.Printf("%v\n", err)

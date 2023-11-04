@@ -57,6 +57,7 @@ func TestModbus(t *testing.T) {
 
 	// Client
 	handler := modbus.NewTCPClientHandler("127.0.0.1:3333")
+	handler.SlaveId = 1
 	// Connect manually so that multiple requests are handled in one connection session
 	err = handler.Connect()
 	if err != nil {

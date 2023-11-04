@@ -27,7 +27,7 @@ func TestReadCoils(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 6
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 1
 	SetDataWithRegisterAndNumber(&frame, 10, 9)
 
@@ -61,7 +61,7 @@ func TestReadDiscreteInputs(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 6
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 2
 	SetDataWithRegisterAndNumber(&frame, 0, 10)
 
@@ -92,7 +92,7 @@ func TestReadHoldingRegisters(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 6
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 3
 	SetDataWithRegisterAndNumber(&frame, 100, 3)
 
@@ -122,7 +122,7 @@ func TestReadInputRegisters(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 6
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 4
 	SetDataWithRegisterAndNumber(&frame, 200, 3)
 
@@ -149,7 +149,7 @@ func TestWriteSingleCoil(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 12
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 5
 	SetDataWithRegisterAndNumber(&frame, 65535, 1024)
 
@@ -176,7 +176,7 @@ func TestWriteHoldingRegister(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 12
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 6
 	SetDataWithRegisterAndNumber(&frame, 5, 6)
 
@@ -203,7 +203,7 @@ func TestWriteMultipleCoils(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 12
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 15
 	SetDataWithRegisterAndNumberAndBytes(&frame, 1, 2, []byte{3})
 
@@ -230,7 +230,7 @@ func TestWriteHoldingRegisters(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 12
-	frame.Device = 255
+	frame.Device = 1
 	frame.Function = 16
 	SetDataWithRegisterAndNumberAndValues(&frame, 1, 2, []uint16{3, 4})
 
@@ -274,7 +274,7 @@ func TestOutOfBounds(t *testing.T) {
 	frame.TransactionIdentifier = 1
 	frame.ProtocolIdentifier = 0
 	frame.Length = 6
-	frame.Device = 255
+	frame.Device = 1
 
 	var req Request
 	req.frame = &frame
