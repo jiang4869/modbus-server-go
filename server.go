@@ -13,6 +13,7 @@ import (
 type Server struct {
 	// Debug enables more verbose messaging.
 	Debug            bool
+	slaveId          uint8
 	listeners        []net.Listener
 	ports            []serial.Port
 	portsWG          sync.WaitGroup
@@ -31,9 +32,11 @@ type Request struct {
 	frame Framer
 }
 
-// NewServer creates a new Modbus server (slave).
-func NewServer() *Server {
-	s := &Server{}
+// NewServerWithSlaveId creates a new Modbus server (slave).
+func NewServerWithSlaveId(slaveId uint8) *Server {
+	s := &Server{
+		slaveId: slaveId,
+	}
 
 	// Allocate Modbus memory maps.
 	s.DiscreteInputs = make([]byte, 65536)
@@ -57,6 +60,11 @@ func NewServer() *Server {
 	go s.handler()
 
 	return s
+}
+
+// NewServer creates a new Modbus server (slave). default slaveId 1
+func NewServer() *Server {
+	return NewServerWithSlaveId(1)
 }
 
 // RegisterFunctionHandler override the default behavior for a given Modbus function.
@@ -89,6 +97,9 @@ func (s *Server) handle(request *Request) Framer {
 func (s *Server) handler() {
 	for {
 		request := <-s.requestChan
+		if request.frame.GetSlaveId() != s.slaveId {
+			continue
+		}
 		response := s.handle(request)
 		request.conn.Write(response.Bytes())
 	}

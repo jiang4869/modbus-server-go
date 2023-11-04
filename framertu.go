@@ -67,6 +67,10 @@ func (frame *RTUFrame) GetFunction() uint8 {
 	return frame.Function
 }
 
+func (frame *RTUFrame) GetSlaveId() uint8 {
+	return frame.Address
+}
+
 // GetData returns the RTUFrame Data byte field.
 func (frame *RTUFrame) GetData() []byte {
 	return frame.Data

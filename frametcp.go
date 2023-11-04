@@ -69,6 +69,10 @@ func (frame *TCPFrame) GetData() []byte {
 	return frame.Data
 }
 
+func (frame *TCPFrame) GetSlaveId() uint8 {
+	return frame.Device
+}
+
 // SetData sets the TCPFrame Data byte field and updates the frame length
 // accordingly.
 func (frame *TCPFrame) SetData(data []byte) {
